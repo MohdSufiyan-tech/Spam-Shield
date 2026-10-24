@@ -84,13 +84,22 @@ export default function App() {
     }
   }
 
-  async function handleSignOut() {
-    setAuthError('')
-    const { error } = await supabase.auth.signOut()
-    if (error) setAuthError(error.message)
-    setPrediction(null)
-    setMessage('')
+async function handleSignOut() {
+  setAuthError('')
+  setAuthMessage('')
+
+  const { error } = await supabase.auth.signOut()
+
+  if (error) {
+    setAuthError(error.message)
+    return
   }
+
+  setSession(null)
+  setPrediction(null)
+  setMessage('')
+  setMode('signin')
+}
 
   async function handlePredict(event) {
     event.preventDefault()
