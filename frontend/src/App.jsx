@@ -71,22 +71,6 @@ export default function App() {
     }
   }
 
-  async function handleGoogleSignIn() {
-    setAuthError('')
-    setAuthMessage('')
-    setAuthBusy(true)
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: window.location.origin }
-      })
-      if (error) throw error
-    } catch (error) {
-      setAuthError(error.message || 'Google sign-in failed.')
-      setAuthBusy(false)
-    }
-  }
-
   async function handleSignOut() {
   setAuthError('')
   setAuthMessage('')
@@ -162,10 +146,7 @@ export default function App() {
             <div className="mobile-brand brand"><span className="brand-icon"><ShieldCheck /></span><span>SpamShield</span></div>
             <h2>{mode === 'signin' ? 'Welcome back' : 'Create your account'}</h2>
             <p className="muted">{mode === 'signin' ? 'Sign in to open your dashboard.' : 'Create an account to start checking messages.'}</p>
-            <button className="google-button" onClick={handleGoogleSignIn} disabled={authBusy}>
-              <GoogleMark /> Continue with Google
-            </button>
-            <div className="separator"><span>or continue with email</span></div>
+            <div className="separator"><span> sign in with email</span></div>
             <form onSubmit={handleAuthSubmit} className="auth-form">
               <label htmlFor="email">Email address</label>
               <div className="field"><Mail size={18} /><input id="email" type="email" autoComplete="email" placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} required /></div>
