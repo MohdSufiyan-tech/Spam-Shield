@@ -140,6 +140,7 @@ export default function App() {
             <div className="feature-line"><CheckCircle2 /> Your own secure sign-in session</div>
           </div>
           <p className="story-foot">A learning project. Predictions can be wrong.</p>
+<p className="developer-credit">Developed by Mohamed Sufiyan K</p>
         </section>
         <section className="auth-panel">
           <div className="auth-card">
@@ -250,7 +251,10 @@ export default function App() {
             </div>
           )}<AlertTriangle size={17} /><p><strong>Important:</strong> This is an educational classifier, not a security guarantee. It can misclassify messages. Verify links and requests independently.</p></div>
       </section>
-      <footer className="footer">SpamShield · Student learning project · AI predictions are not guarantees</footer>
+      <footer className="footer">
+  SpamShield · Student learning project · AI predictions are not guarantees
+  <span className="developer-credit">Developed by Mohamed Sufiyan K</span>
+</footer>
     </main>
   )
 }
