@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import { supabase, supabaseConfigured } from './supabaseClient'
 import {
-  ShieldCheck, Mail, LockKeyhole, Eye, EyeOff, LogOut,
-  MessageSquareText, ScanSearch, CheckCircle2, AlertTriangle,
-  LoaderCircle, Sparkles, Copy, Trash2
+  ShieldCheck, Mail, LockKeyhole, Eye, EyeOff, LogOut, MessageSquareText,
+  ScanSearch, CheckCircle2, AlertTriangle, LoaderCircle, Sparkles
 } from 'lucide-react'
 
 const API_BASE = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
@@ -22,7 +21,6 @@ export default function App() {
   const [prediction, setPrediction] = useState(null)
   const [predictBusy, setPredictBusy] = useState(false)
   const [predictError, setPredictError] = useState('')
-  const [copyStatus, setCopyStatus] = useState('')
 
   useEffect(() => {
     if (!supabaseConfigured || !supabase) {
@@ -86,7 +84,7 @@ export default function App() {
     }
   }
 
-async function handleSignOut() {
+  async function handleSignOut() {
   setAuthError('')
   setAuthMessage('')
 
@@ -131,34 +129,7 @@ async function handleSignOut() {
       setPredictBusy(false)
     }
   }
-  function loadExample(text) {
-  setMessage(text)
-  setPrediction(null)
-  setPredictError('')
-  setCopyStatus('')
-}
-
-function clearMessage() {
-  setMessage('')
-  setPrediction(null)
-  setPredictError('')
-  setCopyStatus('')
-}
-
-async function handleCopyPrediction() {
-  if (!prediction) return
-
-  const resultText =
-    `SpamShield Prediction: ${prediction.display_label}\n` +
-    `Estimated spam probability: ${prediction.spam_probability ?? 'Not available'}%`
-
-  try {
-    await navigator.clipboard.writeText(resultText)
-    setCopyStatus('Prediction result copied!')
-  } catch {
-    setCopyStatus('Copy failed. Please try again in your browser.')
-  }
-}
+  
 
   if (!supabaseConfigured) {
     return <SetupNotice />
@@ -223,52 +194,13 @@ async function handleCopyPrediction() {
             <label htmlFor="sms-message">Message text</label>
             <textarea id="sms-message" rows="6" maxLength={5000} placeholder="Paste the SMS message here…" value={message} onChange={e => { setMessage(e.target.value); setPrediction(null); setPredictError('') }} />
             <div className="textarea-meta"><span>Keep sensitive information out of the demo.</span><span>{message.length}/5000</span></div>
-            <div className="sample-actions">
-  <button
-    type="button"
-    className="signout-button"
-    onClick={() => loadExample(
-      'Hey, are we still meeting at the library at 4 pm?'
-    )}
-  >
-    Try normal SMS
-  </button>
-
-  <button
-    type="button"
-    className="signout-button"
-    onClick={() => loadExample(
-      'Congratulations! You have won a free prize. Claim your reward now!'
-    )}
-  >
-    Try spam SMS
-  </button>
-
-  <button
-    type="button"
-    className="signout-button"
-    onClick={clearMessage}
-  >
-    <Trash2 size={15} /> Clear
-  </button>
-</div>
             <button className="primary-button check-button" type="submit" disabled={predictBusy}>{predictBusy ? <LoaderCircle className="spin" size={18} /> : <ScanSearch size={18} />}{predictBusy ? 'Checking message…' : 'Check message'}</button>
           </form>
           {predictError && <p className="alert error"><AlertTriangle size={17} /> {predictError}</p>}
           {prediction && (
             <div className={`result-card ${prediction.label === 'spam' ? 'spam-result' : 'ham-result'}`}>
               <div className="result-icon">{prediction.label === 'spam' ? <AlertTriangle /> : <CheckCircle2 />}</div>
-              <div className="result-copy"><span className="result-kicker">MODEL PREDICTION</span><h3>{prediction.display_label}</h3><p>{prediction.label === 'spam' ? 'This message resembles spam examples the model learned from.' : 'This message resembles legitimate examples the model learned from.'}</p>{prediction.spam_probability !== null && prediction.spam_probability !== undefined && <p className="score">Estimated spam probability: <strong>{prediction.spam_probability}%</strong></p>} <button
-  type="button"
-  className="signout-button"
-  onClick={handleCopyPrediction}
->
-  <Copy size={15} /> Copy result
-</button>
-
-{copyStatus && (
-  <p className="muted" role="status">{copyStatus}</p>
-)}</div>
+              <div className="result-copy"><span className="result-kicker">MODEL PREDICTION</span><h3>{prediction.display_label}</h3><p>{prediction.label === 'spam' ? 'This message resembles spam examples the model learned from.' : 'This message resembles legitimate examples the model learned from.'}</p>{prediction.spam_probability !== null && prediction.spam_probability !== undefined && <p className="score">Estimated spam probability: <strong>{prediction.spam_probability}%</strong></p>}</div>
             </div>
           )}
         </div>
