@@ -93,3 +93,218 @@ h1,h2,h3,p{margin-top:0}
 .setup-card code{color:#9fc7ff}
 @media(max-width:800px){.auth-layout{grid-template-columns:1fr}.auth-story{display:none}.auth-panel{padding:28px 22px}.mobile-brand{display:flex}.auth-card{max-width:430px}.topbar{height:70px}.user-actions{gap:9px}.user-email{max-width:120px}.dashboard{margin-top:38px}}
 @media(max-width:430px){.brand{font-size:19px}.brand-icon{width:36px;height:36px}.signout-button{padding:9px}.user-email{max-width:95px;font-size:10px}.checker-card{padding:17px}.textarea-meta{font-size:9px}.welcome h1{letter-spacing:-1.4px}}
+/* SpamShield Threat Analysis */
+.threat-card {
+  margin-top: 22px;
+  padding: 24px;
+  border: 1px solid #e3dcfb;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #ffffff, #faf8ff);
+  box-shadow: 0 5px 20px rgba(72, 50, 130, 0.06);
+}
+
+.threat-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.threat-kicker {
+  color: #7c3aed;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+
+.threat-header h3 {
+  margin: 6px 0;
+  color: #172554;
+  font-size: 21px;
+}
+
+.threat-header p,
+.threat-score-row p,
+.threat-item p,
+.threat-empty p {
+  margin: 5px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.risk-badge {
+  flex-shrink: 0;
+  padding: 7px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.risk-low {
+  color: #047857;
+  background: #d1fae5;
+}
+
+.risk-medium {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.risk-high {
+  color: #b91c1c;
+  background: #fee2e2;
+}
+
+.threat-score-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 14px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f1f5ff;
+}
+
+.threat-score {
+  min-width: 75px;
+  color: #4338ca;
+}
+
+.threat-score strong {
+  font-size: 34px;
+}
+
+.threat-score span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.threat-score-row > div:last-child > strong {
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.threat-progress {
+  height: 9px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  border-radius: 20px;
+  background: #e2e8f0;
+}
+
+.threat-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  transition: width 0.3s ease;
+}
+
+.threat-progress-fill.risk-low {
+  background: #10b981;
+}
+
+.threat-progress-fill.risk-medium {
+  background: #f59e0b;
+}
+
+.threat-progress-fill.risk-high {
+  background: #ef4444;
+}
+
+.threat-section-title {
+  margin: 0 0 14px;
+  color: #1e293b;
+  font-size: 15px;
+}
+
+.threat-list {
+  display: grid;
+  gap: 12px;
+}
+
+.threat-item,
+.threat-empty {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #edf0f5;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.threat-warning-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+}
+
+.threat-warning-icon.risk-high {
+  color: #dc2626;
+  background: #fee2e2;
+}
+
+.threat-warning-icon.risk-medium {
+  color: #b45309;
+  background: #fef3c7;
+}
+
+.threat-item > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.threat-item strong,
+.threat-empty strong {
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.threat-level {
+  flex-shrink: 0;
+  align-self: center;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.threat-empty {
+  align-items: center;
+  color: #059669;
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.threat-empty > div {
+  flex: 1;
+}
+
+@media (max-width: 600px) {
+  .threat-card {
+    padding: 16px;
+  }
+
+  .threat-header {
+    flex-direction: column;
+  }
+
+  .threat-score-row {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .threat-item {
+    flex-wrap: wrap;
+  }
+
+  .threat-level {
+    margin-left: 50px;
+  }
+}
