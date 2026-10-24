@@ -19,6 +19,9 @@ export default function App() {
   const [authError, setAuthError] = useState('')
   const [message, setMessage] = useState('')
   const [prediction, setPrediction] = useState(null)
+  const threatAnalysis = prediction
+  ? analyzeThreats(message)
+  : null
   const [predictBusy, setPredictBusy] = useState(false)
   const [predictError, setPredictError] = useState('')
 
@@ -204,7 +207,67 @@ export default function App() {
             </div>
           )}
         </div>
-        <div className="disclaimer"><AlertTriangle size={17} /><p><strong>Important:</strong> This is an educational classifier, not a security guarantee. It can misclassify messages. Verify links and requests independently.</p></div>
+        <div className="disclaimer">{threatAnalysis && (
+            <div className="threat-card">
+              <div className="threat-header">
+                <div>
+                  <span className="threat-kicker">SECURITY SCAN</span>
+                  <h3>Spam Threat Analysis</h3>
+                  <p>Rule-based checks for common suspicious patterns.</p>
+                </div>
+                <span className={`risk-badge risk-${threatAnalysis.risk.toLowerCase()}`}>
+                  {threatAnalysis.risk} Risk
+                </span>
+              </div>
+
+              <div className="threat-score-row">
+                <div className="threat-score">
+                  <strong>{threatAnalysis.score}</strong>
+                  <span>/100</span>
+                </div>
+                <div>
+                  <strong>Threat indicator</strong>
+                  <p>This is a rule-based score, not a probability of fraud.</p>
+                </div>
+              </div>
+
+              <div className="threat-progress">
+                <div
+                  className={`threat-progress-fill risk-${threatAnalysis.risk.toLowerCase()}`}
+                  style={{ width: `${threatAnalysis.score}%` }}
+                />
+              </div>
+
+              <h4 className="threat-section-title">Warning signs</h4>
+
+              {threatAnalysis.threats.length === 0 ? (
+                <div className="threat-empty">
+                  <CheckCircle2 size={20} />
+                  <div>
+                    <strong>No common warning patterns detected</strong>
+                    <p>This does not guarantee that the message is safe.</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="threat-list">
+                  {threatAnalysis.threats.map((threat, index) => (
+                    <div className="threat-item" key={index}>
+                      <span className={`threat-warning-icon risk-${threat.level}`}>
+                        <AlertTriangle size={19} />
+                      </span>
+                      <div>
+                        <strong>{threat.name}</strong>
+                        <p>{threat.description}</p>
+                      </div>
+                      <span className={`threat-level risk-${threat.level}`}>
+                        {threat.level}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}<AlertTriangle size={17} /><p><strong>Important:</strong> This is an educational classifier, not a security guarantee. It can misclassify messages. Verify links and requests independently.</p></div>
       </section>
       <footer className="footer">SpamShield · Student learning project · AI predictions are not guarantees</footer>
     </main>
