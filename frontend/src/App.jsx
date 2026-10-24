@@ -218,3 +218,68 @@ function SetupNotice() {
 function GoogleMark() {
   return <svg width="19" height="19" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.76 7.18l7.73 6C44.42 37.95 46.98 31.86 46.98 24.55z"/><path fill="#FBBC05" d="M10.53 28.59a14.4 14.4 0 0 1 0-9.18l-7.98-6.19a23.95 23.95 0 0 0 0 21.56l7.98-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.91-5.8l-7.73-6c-2.14 1.44-4.89 2.3-8.18 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
 }
+function analyzeThreats(message) {
+  const text = message.toLowerCase()
+  const threats = []
+
+  const checks = [
+    {
+      name: 'Suspicious link',
+      description: 'Contains a web link. Verify the website before opening it.',
+      test: /https?:\/\/|www\./i,
+      level: 'medium',
+    },
+    {
+      name: 'Link shortener',
+      description: 'Shortened links can hide the destination website.',
+      test: /bit\.ly|tinyurl\.com|t\.co|is\.gd|cutt\.ly/i,
+      level: 'high',
+    },
+    {
+      name: 'Urgent or threatening language',
+      description: 'Uses pressure or urgency to encourage a quick response.',
+      test: /\b(urgent|immediately|act now|account suspended|account blocked|expires today|verify now)\b/i,
+      level: 'medium',
+    },
+    {
+      name: 'Prize or reward claim',
+      description: 'Promises a prize, lottery win, gift, or reward.',
+      test: /\b(you have won|you won|winner|lottery|claim your prize|free gift|cash reward)\b/i,
+      level: 'medium',
+    },
+    {
+      name: 'Sensitive information request',
+      description: 'May ask for passwords, OTPs, PINs, or banking details.',
+      test: /\b(share your otp|send your otp|enter your pin|password required|bank details|verify your password)\b/i,
+      level: 'high',
+    },
+    {
+      name: 'Unusual payment request',
+      description: 'Mentions a payment or fee that should be independently verified.',
+      test: /\b(pay a fee|send money|transfer money|processing fee|claim fee|payment required)\b/i,
+      level: 'medium',
+    },
+  ]
+
+  for (const check of checks) {
+    if (check.test.test(text)) {
+      threats.push({
+        name: check.name,
+        description: check.description,
+        level: check.level,
+      })
+    }
+  }
+
+  const highCount = threats.filter(item => item.level === 'high').length
+  const score = Math.min(
+    100,
+    threats.reduce((total, item) => total + (item.level === 'high' ? 35 : 18), 0)
+  )
+
+  let risk = 'Low'
+  if (highCount > 0 || score >= 50) risk = 'High'
+  else if (score >= 18) risk = 'Medium'
+
+  return { threats, score, risk }
+}
